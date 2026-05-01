@@ -1,0 +1,8 @@
+PyQt6
+pyqtgraph
+fastapi
+uvicorn
+numpy
+deap
+websockets
+pytest

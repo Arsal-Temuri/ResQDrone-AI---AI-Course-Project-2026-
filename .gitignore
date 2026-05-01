@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+/.venv
+*/venv/
+
+# Distribution/build
+build/
+dist/
+*.egg-info/
+pip-wheel-metadata/
+
+# Pytest
+.pytest_cache/
+coverage.xml
+htmlcov/
+
+# Editor & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Python bytecode
+*.pyc
+
+# Local environment files
+.env
+env_vars/
+
+# Logs
+*.log
+
+# Jupyter
+.ipynb_checkpoints
+
+# SQLite DBs
+*.sqlite3
+
+venv/
+__pycache__/
+*.pyc
+.env
+.vscode/
+.idea/
+
+
+venv/
+__pycache__/
+*.pyc
+.vscode/
+.idea/
+.env
