@@ -64,6 +64,14 @@ def reset_sim():
     return {"status": "reset"}
 
 
+@app.post("/randomize", tags=["Simulation"])
+def randomize_sim():
+    if not _engine:
+        raise HTTPException(503, "Engine not initialized")
+    _engine.randomize_grid()
+    return {"status": "randomized"}
+
+
 @app.get("/metrics", tags=["Analytics"])
 def get_metrics():
     if not _engine:

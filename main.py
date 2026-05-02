@@ -8,8 +8,10 @@ import threading
 import logging
 import uvicorn
 from PyQt6.QtWidgets import QApplication
+from PyQt6.QtCore import QTimer
 from simulation.engine import SimulationEngine
 from gui.main_window import MainWindow
+from gui.audio_manager import AudioManager
 import backend.api as api_module
 import backend.websocket_server as ws_module
 from config.settings import API_HOST, API_PORT
@@ -52,8 +54,13 @@ def main():
     qt_app = QApplication(sys.argv)
     qt_app.setApplicationName("Multi-Drone Disaster Response")
 
+    audio_manager = AudioManager(qt_app)
+    qt_app.installEventFilter(audio_manager)
+
     window = MainWindow(engine)
     window.show()
+
+    QTimer.singleShot(0, audio_manager.play_theme)
 
     logger.info("GUI started. Ready.")
     sys.exit(qt_app.exec())

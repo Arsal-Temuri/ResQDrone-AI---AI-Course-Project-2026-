@@ -52,3 +52,6 @@ class EventLog(QWidget):
         cursor = self.log.textCursor()
         cursor.movePosition(QTextCursor.MoveOperation.Start)
         self.log.setTextCursor(cursor)
+
+    def clear(self):
+        self.log.clear()

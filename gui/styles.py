@@ -67,6 +67,17 @@ QPushButton#btn_reset {
     color: #c84040;
 }
 
+QPushButton#btn_randomize {
+    background-color: #182a30;
+    border-color: #24505a;
+    color: #52c6d6;
+}
+
+QPushButton#btn_randomize:hover {
+    background-color: #1d353d;
+    border-color: #357680;
+}
+
 QSlider::groove:horizontal {
     height: 4px;
     background: #2a2d38;

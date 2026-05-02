@@ -23,15 +23,19 @@ class SimulationEngine:
 
     def __init__(self):
         self.grid = DisasterGrid(GRID_ROWS, GRID_COLS)
-        self.comm_map = CommunicationMap(self.grid)
-        self.disaster_gen = DisasterGenerator(self.grid)
-        self.swarm = SwarmController(self.grid, self.comm_map)
-        self.metrics = MetricsTracker(self.grid, self.swarm)
-        self.event_manager = EventManager()
         self.tick_count = 0
         self.running = False
         self.paused = False
+        self.comm_map = CommunicationMap(self.grid)
+        self.disaster_gen = DisasterGenerator(self.grid)
+        self._rebuild_runtime_state()
         self._run_initial_ga()
+
+    def _rebuild_runtime_state(self):
+        """Recreate drone fleet and runtime trackers for the current grid."""
+        self.swarm = SwarmController(self.grid, self.comm_map)
+        self.metrics = MetricsTracker(self.grid, self.swarm)
+        self.event_manager = EventManager()
 
     def _run_initial_ga(self):
         """Run GA at startup to assign zones."""
@@ -91,4 +95,20 @@ class SimulationEngine:
         self.paused = not self.paused
 
     def reset(self):
-        self.__init__()
+        """Reset drones and runtime state while preserving the current grid."""
+        self.tick_count = 0
+        self.running = False
+        self.paused = False
+        self._rebuild_runtime_state()
+        self._run_initial_ga()
+
+    def randomize_grid(self):
+        """Create a brand-new randomized grid and rebuild all runtime state."""
+        self.grid = DisasterGrid(GRID_ROWS, GRID_COLS)
+        self.comm_map = CommunicationMap(self.grid)
+        self.disaster_gen = DisasterGenerator(self.grid)
+        self.tick_count = 0
+        self.running = False
+        self.paused = False
+        self._rebuild_runtime_state()
+        self._run_initial_ga()

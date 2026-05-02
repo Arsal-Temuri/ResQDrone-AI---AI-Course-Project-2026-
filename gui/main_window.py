@@ -58,6 +58,7 @@ class MainWindow(QMainWindow):
         self.control_panel.sig_speed_changed.connect(self._set_speed)
         self.control_panel.sig_toggle_comm.connect(self._toggle_comm)
         self.control_panel.sig_toggle_paths.connect(self._toggle_paths)
+        self.control_panel.sig_randomize_grid.connect(self._randomize_grid)
         self.control_panel.sig_zoom_in.connect(self._zoom_in)
         self.control_panel.sig_zoom_out.connect(self._zoom_out)
         self.control_panel.sig_fit_window.connect(self._fit_window)
@@ -108,16 +109,38 @@ class MainWindow(QMainWindow):
     def _reset(self):
         self.timer.stop()
         self.engine.reset()
-        # After reset, engine creates new grid/swarm/metrics objects
-        # Update canvas references to new objects
+        # After reset, grid stays the same but drones/metrics are rebuilt
         self.grid_canvas.grid = self.engine.grid
         self.grid_canvas.drones = self.engine.swarm.drones
+        self.grid_canvas.hovered_cell = None
+        self.grid_canvas.selected_cell = None
         self.drone_panel.drones = self.engine.swarm.drones
         self.metrics_panel.metrics = self.engine.metrics
+        self.event_log.clear()
         self.grid_canvas.refresh()
         self.drone_panel.update_drones(
             self.engine.swarm.drones, self.engine.swarm.agents
         )
+
+    def _randomize_grid(self):
+        was_running = self.timer.isActive()
+        self.timer.stop()
+        self.engine.randomize_grid()
+        self.grid_canvas.grid = self.engine.grid
+        self.grid_canvas.drones = self.engine.swarm.drones
+        self.grid_canvas.hovered_cell = None
+        self.grid_canvas.selected_cell = None
+        self.drone_panel.drones = self.engine.swarm.drones
+        self.metrics_panel.metrics = self.engine.metrics
+        self.event_log.clear()
+        self.grid_canvas.refresh()
+        self.drone_panel.update_drones(
+            self.engine.swarm.drones, self.engine.swarm.agents
+        )
+        self.metrics_panel.refresh()
+        if was_running:
+            self.engine.start()
+            self.timer.start()
 
     def _set_speed(self, ms: int):
         self.timer.setInterval(ms)

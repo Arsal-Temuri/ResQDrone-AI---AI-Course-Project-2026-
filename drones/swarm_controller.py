@@ -6,7 +6,7 @@ from environment.cell import CellState
 from environment.communication_map import CommunicationMap
 from algorithms.astar.astar import astar, find_best_target
 from algorithms.reinforcement.qlearning import QLearningAgent
-from config.settings import NUM_DRONES, GRID_ROWS, GRID_COLS
+from config.settings import NUM_DRONES
 
 
 class SwarmController:
@@ -24,11 +24,17 @@ class SwarmController:
 
     def _spawn_drones(self):
         base_positions = self.grid.get_base_positions()
+        self.drones = []
+        self.agents = []
         for i in range(NUM_DRONES):
             base_r, base_c = base_positions[i % len(base_positions)]
             drone = Drone(drone_id=i, row=base_r, col=base_c)
             self.drones.append(drone)
             self.agents.append(QLearningAgent(drone_id=i))
+
+    def reset_fleet(self):
+        """Return all drones to base positions and clear fleet-level state."""
+        self._spawn_drones()
 
     def apply_zone_assignments(self, assignments: List[int], zones: list):
         """Apply GA zone assignments to drones."""

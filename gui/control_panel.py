@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import (
     QWidget,
     QVBoxLayout,
     QHBoxLayout,
+    QGridLayout,
     QPushButton,
     QLabel,
     QSlider,
@@ -17,6 +18,7 @@ class ControlPanel(QWidget):
     sig_start = pyqtSignal()
     sig_pause = pyqtSignal()
     sig_reset = pyqtSignal()
+    sig_randomize_grid = pyqtSignal()
     sig_speed_changed = pyqtSignal(int)
     sig_toggle_comm = pyqtSignal(bool)
     sig_toggle_paths = pyqtSignal(bool)
@@ -35,9 +37,9 @@ class ControlPanel(QWidget):
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(title)
 
-        # Control buttons
+        # Control buttons (2x2 grid)
         btn_group = QGroupBox("SIMULATION")
-        btn_layout = QHBoxLayout(btn_group)
+        btn_layout = QGridLayout(btn_group)
 
         self.btn_start = QPushButton("▶ START")
         self.btn_start.setObjectName("btn_start")
@@ -45,14 +47,20 @@ class ControlPanel(QWidget):
         self.btn_pause.setObjectName("btn_pause")
         self.btn_reset = QPushButton("⟳ RESET")
         self.btn_reset.setObjectName("btn_reset")
+        self.btn_randomize = QPushButton("⟲ RANDOMIZE")
+        self.btn_randomize.setObjectName("btn_randomize")
 
         self.btn_start.clicked.connect(self.sig_start.emit)
         self.btn_pause.clicked.connect(self.sig_pause.emit)
         self.btn_reset.clicked.connect(self.sig_reset.emit)
+        self.btn_randomize.clicked.connect(self.sig_randomize_grid.emit)
 
-        btn_layout.addWidget(self.btn_start)
-        btn_layout.addWidget(self.btn_pause)
-        btn_layout.addWidget(self.btn_reset)
+        # Arrange in 2x2 grid: START | PAUSE
+        #                       RESET | RANDOMIZE
+        btn_layout.addWidget(self.btn_start, 0, 0)
+        btn_layout.addWidget(self.btn_pause, 0, 1)
+        btn_layout.addWidget(self.btn_reset, 1, 0)
+        btn_layout.addWidget(self.btn_randomize, 1, 1)
         layout.addWidget(btn_group)
 
         # Speed control

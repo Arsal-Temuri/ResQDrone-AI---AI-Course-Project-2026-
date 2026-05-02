@@ -36,3 +36,6 @@ class MetricsTracker:
 
     def get_series(self, key: str) -> List[float]:
         return [h[key] for h in self.history if key in h]
+
+    def clear(self):
+        self.history.clear()

@@ -14,3 +14,6 @@ class EventManager:
 
     def all(self) -> List[dict]:
         return list(self._queue)
+
+    def clear(self):
+        self._queue.clear()

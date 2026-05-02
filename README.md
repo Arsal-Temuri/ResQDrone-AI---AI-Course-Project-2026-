@@ -11,6 +11,8 @@ A comprehensive **AI-powered multi-drone simulation system** combining PyQt6 GUI
 
 ✅ **PyQt6 GUI Dashboard**
 - Live animated grid with drone positions, battery status, and paths
+- Interactive hover/click cell inspection with coordinates and cell type details
+- Heatmap overlay for live disaster/risk intensity visualization
 - Real-time drone fleet status table
 - Multi-chart metrics visualization (coverage, battery, Q-learning rewards)
 - Dynamic event log
@@ -103,6 +105,7 @@ Edit [config/settings.py](config/settings.py) to adjust:
 | POST | `/start` | Start simulation |
 | POST | `/pause` | Pause/resume |
 | POST | `/reset` | Reset to initial state |
+| POST | `/randomize` | Generate a brand-new randomized grid |
 | GET | `/metrics` | Time series metrics |
 | GET | `/drones` | Fleet status |
 | GET | `/grid` | Full grid cell states |
@@ -114,7 +117,8 @@ Edit [config/settings.py](config/settings.py) to adjust:
 **Simulation Panel:**
 - ▶ START — Begin simulation
 - ⏸ PAUSE — Pause/resume
-- ⟳ RESET — Reset to initial state
+- ⟳ RESET — Return all drones to their base stations on the current grid
+- ⟲ RANDOMIZE — Create a new randomized grid and restart the simulation state
 
 **Speed Control:**
 - Slider to adjust tick interval (50ms–2000ms)
@@ -122,6 +126,11 @@ Edit [config/settings.py](config/settings.py) to adjust:
 **Overlays:**
 - Signal strength overlay — Visualize communication zones
 - Show planned paths — Display drone path predictions
+- Show heatmap — Overlay current grid intensity/risk shading
+
+**Grid Interaction:**
+- Hover any cell to see coordinates, cell type, communication strength, and heatmap intensity
+- Click any cell to select it and keep it highlighted while inspecting the map
 
 **Metrics Display:**
 - Live coverage % and priority coverage %
